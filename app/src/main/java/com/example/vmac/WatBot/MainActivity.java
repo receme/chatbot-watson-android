@@ -17,13 +17,9 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import com.ibm.watson.developer_cloud.android.library.audio.utils.ContentType;
 import com.ibm.watson.developer_cloud.conversation.v1.ConversationService;
 import com.ibm.watson.developer_cloud.conversation.v1.model.MessageRequest;
 import com.ibm.watson.developer_cloud.conversation.v1.model.MessageResponse;
-import com.ibm.watson.developer_cloud.speech_to_text.v1.model.RecognizeOptions;
-import com.ibm.watson.developer_cloud.speech_to_text.v1.model.SpeechResults;
-import com.ibm.watson.developer_cloud.speech_to_text.v1.websocket.RecognizeCallback;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -83,13 +79,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (checkInternetConnection()) {
-                    sendMessage();
+                    sendMessage(inputMessage.getText().toString());
                 }
             }
         });
-    }
 
-    ;
+    }
 
     // Speech-to-Text Record Audio permission
     @Override
@@ -116,16 +111,22 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-//    protected void makeRequest() {
-//        ActivityCompat.requestPermissions(this,
-//                new String[]{Manifest.permission.RECORD_AUDIO},
-//                RECORD_REQUEST_CODE);
-//    }
-
     // Sending a message to Watson Conversation Service
-    private void sendMessage() {
+    private void sendMessage(String message) {
 
-        final String inputmessage = this.inputMessage.getText().toString().trim();
+        message = message.replace("\n"," ");
+        if (message.isEmpty()) {
+            return;
+        }
+
+        if(!message.toLowerCase().matches(".*[a-z0-9_].*")){
+            return;
+        }
+
+        System.out.println("Message: "+message);
+
+        final String inputmessage = message.trim();
+
 
         Message inputMessage = new Message();
         inputMessage.setMessage(inputmessage);
@@ -187,43 +188,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    //Record a message via Watson Speech to Text
-//    private void recordMessage() {
-//        //mic.setEnabled(false);
-//        speechService = new SpeechToText();
-//        speechService.setUsernameAndPassword(STT_username, STT_password);
-//
-//        if(listening != true) {
-//            capture = new MicrophoneInputStream(true);
-//            new Thread(new Runnable() {
-//                @Override public void run() {
-//                    try {
-//                        speechService.recognizeUsingWebSocket(capture, getRecognizeOptions(), new MicrophoneRecognizeDelegate());
-//                    } catch (Exception e) {
-//                        showError(e);
-//                    }
-//                }
-//            }).start();
-//            listening = true;
-//            Toast.makeText(MainActivity.this,"Listening....Click to Stop", Toast.LENGTH_LONG).show();
-//
-//        } else {
-//            try {
-//                capture.close();
-//                listening = false;
-//                Toast.makeText(MainActivity.this,"Stopped Listening....Click to Start", Toast.LENGTH_LONG).show();
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//
-//        }
-//    }
-
-    /**
-     * Check Internet Connection
-     *
-     * @return
-     */
     private boolean checkInternetConnection() {
         // get Connectivity Manager object to check connection
         ConnectivityManager cm =
@@ -243,56 +207,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    //Private Methods - Speech to Text
-    private RecognizeOptions getRecognizeOptions() {
-        return new RecognizeOptions.Builder()
-                .continuous(true)
-                .contentType(ContentType.OPUS.toString())
-                //.model("en-UK_NarrowbandModel")
-                .interimResults(true)
-                .inactivityTimeout(2000)
-                .build();
-    }
-
-    //Watson Speech to Text Methods.
-    private class MicrophoneRecognizeDelegate implements RecognizeCallback {
-
-        @Override
-        public void onTranscription(SpeechResults speechResults) {
-            System.out.println(speechResults);
-            if (speechResults.getResults() != null && !speechResults.getResults().isEmpty()) {
-                String text = speechResults.getResults().get(0).getAlternatives().get(0).getTranscript();
-                showMicText(text);
-            }
-        }
-
-        @Override
-        public void onConnected() {
-
-        }
-
-        @Override
-        public void onError(Exception e) {
-            showError(e);
-            //enableMicButton();
-        }
-
-        @Override
-        public void onDisconnected() {
-            //enableMicButton();
-        }
-
-        @Override
-        public void onInactivityTimeout(RuntimeException runtimeException) {
-
-        }
-
-        @Override
-        public void onListening() {
-
-        }
-    }
-
     private void showMicText(final String text) {
         runOnUiThread(new Runnable() {
             @Override
@@ -301,14 +215,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
-//    private void enableMicButton() {
-//        runOnUiThread(new Runnable() {
-//            @Override public void run() {
-//                btnRecord.setEnabled(true);
-//            }
-//        });
-//    }
 
     private void showError(final Exception e) {
         runOnUiThread(new Runnable() {
