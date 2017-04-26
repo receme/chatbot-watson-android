@@ -20,6 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_marginRight="10dp"
+        android:layout_marginLeft="40dp"
         android:background="@drawable/bg_bubble_self"
         android:textIsSelectable="true"
         android:textSize="15sp"
