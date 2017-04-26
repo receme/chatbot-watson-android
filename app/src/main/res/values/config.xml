@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Watson Conversation Service Credentials --> 
-    <string name="workspace_id"></string> 
-    <string name="conversation_username"></string> 
-    <string name="conversation_password">0OJkFKSJvvK1</string>  
+    <string name="workspace_id">ca5da83e-9aa9-4f99-9f52-3eda9ecd194c</string> 
+    <string name="conversation_username">274bf6bd-efe6-4095-af87-b96def1e3452</string> 
+    <string name="conversation_password">Kr8bLALWNeVw</string>  
 
-    <!--Watson Speech-To-Text Service Credentials--> 
-    <string name="STT_username"></string> 
-    <string name="STT_password">oyWnJnkm14dz</string>  
+    <!--&lt;!&ndash;Watson Speech-To-Text Service Credentials&ndash;&gt; -->
+    <!--<string name="STT_username"></string> -->
+    <!--<string name="STT_password">oyWnJnkm14dz</string>  -->
 
-    <!--Watson Text-To-Speech Service Credentials--> 
-    <string name="TTS_username"></string> 
-    <string name="TTS_password"></string>  
+    <!--&lt;!&ndash;Watson Text-To-Speech Service Credentials&ndash;&gt; -->
+    <!--<string name="TTS_username"></string> -->
+    <!--<string name="TTS_password"></string>  -->
 
-    <!--Bluemix Mobile Analytics--> 
-    <string name="mobileanalytics_apikey">5bc78043-759d-4e52-9355-861b406bdaef</string>
+    <!--&lt;!&ndash;Bluemix Mobile Analytics&ndash;&gt; -->
+    <!--<string name="mobileanalytics_apikey">5bc78043-759d-4e52-9355-861b406bdaef</string>-->
 </resources>
